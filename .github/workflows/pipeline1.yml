@@ -1,0 +1,29 @@
+name: Create Folder and File Pipeline
+
+# Controls when the workflow will run (Triggers on push to the main branch)
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Allows you to manually trigger this workflow from GitHub
+
+jobs:
+  build-and-create:
+    # Runs on a fresh Ubuntu virtual machine hosted by GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checks-out your repository under $GITHUB_WORKSPACE so the job can access it
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Creates a folder and a file inside it on the Ubuntu runner
+      - name: Create folder and file
+        run: |
+          mkdir -p my-new-ubuntu-folder
+          echo "This file was created automatically by GitHub Actions!" > my-new-ubuntu-folder/output.txt
+          
+      # Step 3: Optional check to verify the folder and file exist in the pipeline logs
+      - name: Verify creation
+        run: |
+          ls -la my-new-ubuntu-folder
+          cat my-new-ubuntu-folder/output.txt
